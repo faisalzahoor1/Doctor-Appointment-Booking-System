@@ -13,7 +13,7 @@ export const Header = () => {
             <a className=' flex items-center gap-2 mt-30 bg-white  px-14 py-3 rounded-full tex-gray-600 text-sm  md:m-0 lg:mt-4 lg:w-64 hover:scale-105 transition-all duration-300' href="#speciality">Book appointment <img className='w-3' src={assets.arrow_icon} alt="" /></a>
         </div>
         <div className='md:w-1/2 relative'>
-            <img className='w-full md: absolute bottom-0 h-auto rounded-large' src={assets.header_img} alt="" />
+            <img className='hidden md:block w-full absolute bottom-0 h-auto rounded-large' src={assets.header_img} alt="" />
         </div>
     </div>
   )
