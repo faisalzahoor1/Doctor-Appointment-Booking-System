@@ -42,6 +42,19 @@ export const Navbar = () => {
                     </div >
                         : <button onClick={() => navigate('/login')} className='bg-blue-500 text-white px-8 py-3 rounded-full font-light hidden md:block'>Create Account</button>
                 }
+                <img onClick={()=>setMenu(true)}  className='w-6 md:hidden' src={assets.menu_icon} alt="" />
+                <div  className={`${showMenu ? 'fixed w-full': 'h-0 w-0'} md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all duration-300`}>
+                    <div className='flex items-center justify-between py-6 px-5'>
+                        <img className='w-36' src={assets.logo} alt="" />
+                        <img className='w-7' onClick={()=>setMenu(false)} src={assets.cross_icon} alt="" />
+                    </div>
+                    <ul className='flex flex-col items-center mt-5 gap-2 px-5 text-lg font-medium'>
+                        <NavLink  onClick={()=>setMenu(false)}  to="/"><p className='px-4 py-2 rounded inline-block'>HOME</p></NavLink>
+                        <NavLink  onClick={()=>setMenu(false)}  to="/doctors"><p className='px-4 py-2 rounded inline-block'>ALL DOCTORS</p></NavLink>
+                        <NavLink  onClick={()=>setMenu(false)}  to="/about"><p className='px-4 py-2 rounded inline-block'>ABOUT</p></NavLink>
+                        <NavLink  onClick={()=>setMenu(false)}   to="/contact"><p className='px-4 py-2 rounded inline-block'>CONTACT</p></NavLink>
+                    </ul>
+                </div>
             </div>
         </div>
     )
