@@ -16,11 +16,13 @@ app.use(express.json())
 app.use(cors())
 
 //api endpoint
-app.use('/api/admin', adminRouter);
+app.use('/api/admin', adminRouter)
+
+
 app.get('/',(req,res)=>{
     res.send("API WORKING")
 })
 
-app.listen(port, ()=>{
+app.listen(4000, ()=>{
     console.log("SERVER IS RUNNING", port)
 })
