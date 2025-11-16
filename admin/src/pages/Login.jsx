@@ -1,10 +1,12 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState} from 'react'
 import { AdminContext } from '../context/AdminContext'
+import { useNavigate } from 'react-router-dom'
 // import assets from '../assets/assets_admin/assets'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
 const Login = () => {
+    const navigate = useNavigate();
     const [state, setState] = useState('Admin')
 
     const {setAToken,backend_url} = useContext(AdminContext)
@@ -16,10 +18,11 @@ const Login = () => {
 
         try {
             if (state === 'Admin') {
-                const {data} = await axios.post(backend_url +'/api/admin/login', {email, password})
+                const {data} = await axios.post(backend_url +'api/admin/login', {email, password})
                 if (data.success) {
                     localStorage.setItem('atoken', data.token)
                     setAToken(data.token)
+                    navigate('/admin-dashboard') 
                 }else{
                     toast.error(data.message)
                 }
