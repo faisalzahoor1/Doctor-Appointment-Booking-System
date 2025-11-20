@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken'
 const authLogin = async(req, res, next)=>{
     try {
         const {atoken} = req.headers
+        
         if (!atoken) {
             return res.json({success:false, message:"Not an Authorized Login"})
         }

@@ -42,7 +42,7 @@ const AddDoctor = () => {
       formData.append('address', JSON.stringify({ line1: Address1, line2: Address2 }))
       formData.append('about', about)
 
-      const { data } = await axios.post(backend_url + 'api/admin/add-doctor', formData, {headers: {atoken}})
+      const { data } = await axios.post(backend_url + '/api/admin/add-doctor', formData, {headers: {atoken}})
       if (data.success) {
         toast.success(data.message)
         setDocImg('false')
@@ -145,7 +145,7 @@ const AddDoctor = () => {
           <textarea onChange={(e) => setAbout(e.target.value)} value={about} className='w-full px-4 pt-2 border rounded' placeholder='write about doctor' rows={5} required></textarea>
         </div>
 
-        <button type='submit' className='bg-blue-500 px-10 py-3 mt-4 text-white rounded-full'>Add Doctor</button>
+        <button type='submit' className='bg-blue-500 px-10 py-3 mt-4 text-white rounded-full active:bg-blue-700 active:scale-95'>Add Doctor</button>
       </div>
     </form>
   )

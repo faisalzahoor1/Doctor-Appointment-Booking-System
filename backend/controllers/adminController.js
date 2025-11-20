@@ -56,20 +56,33 @@ const addDoctor = async (req, res) => {
     }
 }
 const adminLogin = async (req, res) => {
-        try {
-            const { email, password } = req.body
+    try {
+        const { email, password } = req.body
 
-            if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
-                const token = jwt.sign(email+password, process.env.JWT_SECRET)
-                res.json({success:true, token})
-            }else{
-                res.json({success:false, message:"Invalid Credentials"})
-            }
-        } catch (error) {
-            console.log(error)
-            res.json({ success: false, message: error.message })
+        if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+            // const token = jwt.sign(email+password, process.env.JWT_SECRET)
+            const token = jwt.sign(
+                { email: process.env.ADMIN_EMAIL },
+                process.env.JWT_SECRET,
+                { expiresIn: "1d" }
+            )
+            res.json({ success: true, token })
+        } else {
+            res.json({ success: false, message: "Invalid Credentials" })
         }
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: error.message })
     }
+}
+const allDoctor = async (req, res) => {
+    try {
+        const doctors = doctorsModel.find({}).select('-password')
+        res.json({ success: true, doctors })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+}
 
-export { addDoctor, adminLogin }
+export { addDoctor, adminLogin, allDoctor }
 
