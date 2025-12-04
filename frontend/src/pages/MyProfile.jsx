@@ -1,24 +1,83 @@
-import React, { useState } from 'react'
-import { assets } from '../assets/assets_frontend/assets'
+import React, { useState, useContext, useEffect } from 'react'
+import { AppContext } from '../context/AppContext';
+import { toast } from "react-toastify";
+import axios from 'axios'
+import { assets } from '../assets/assets_frontend/assets.js'
+
 
 export const MyProfile = () => {
-  const [userData, setUserData] = useState({
-    name: "Faisal",
-    image: assets.profile_pic,
-    email: "faisalzahoor96@gmail.com",
-    phone: "0318-1982143",
-    address: {
-      line1: "Mangu Town",
-      line2: "Bhara Kahu, Islamabad"
-    },
-    gender: "Male",
-    dob: "5/10/2002"
-  });
+  const { token } = useContext(AppContext)
 
-  const [isedited, setIsedited] = useState(true);
-  return (
+  const [userData, setUserData] = useState(false);
+  const [isedited, setIsedited] = useState(false);
+  const [image, setImage] = useState(false)
+
+
+
+  const loadProfileData = async () => {
+    try {
+      // console.log("code")
+      const { data } = await axios.get('http://localhost:4000/api/user/get-profile', { headers: { token } })
+      if (data.success) {
+        setUserData(data.userData)
+      } else {
+
+        toast.error(data.message + "data is not coming from backend")
+      }
+
+    } catch (error) {
+      // console.log("faisal")
+      toast.error(error.message)
+    }
+  }
+  useEffect(() => {
+    if (token) {
+      // console.log("hello")
+      loadProfileData()
+    } else {
+      setUserData(false)
+    }
+  }, [token])
+
+  const updateUserProfileData = async () => {
+    try {
+      const formData = new FormData()
+
+      formData.append('name', userData.name)
+      formData.append('phone', userData.phone)
+      formData.append('address', JSON.stringify(userData.address))
+      formData.append('dob', userData.dob)
+      formData.append('gender', userData.gender)
+      image && formData.append('image', image)
+
+      const { data } = await axios.post('http://localhost:4000/api/user/update', formData, { headers: { token } })
+      if (data.success) {
+        toast.success(data.message)
+        await loadProfileData()
+        setIsedited(false)
+        setImage(false)
+      } else {
+        toast.error(data.message)
+      }
+
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
+
+  return userData && (
     <div className='ml-16 max-w-lg flex flex-col gap-2 text-sm'>
-      <img className='w-36 rounded' src={userData.image} alt="" />
+      {
+        isedited ? <label htmlFor="image">
+          <div className='inline-block relative cursor-pointer'>
+            <img className='w-36 rounded opacity-75' src={image ? URL.createObjectURL(image) : userData.image} alt="" />
+            <img className='w-10 absolute bottom-12 right-12' src={image ? '' : assets.upload_icon} alt="" />
+          </div>
+          <input onChange={(e) => { setImage(e.target.files[0]) }} type="file" id='image' hidden />
+        </label>
+          : <img className='w-36 rounded' src={userData.image} alt="" />
+      }
+
       {
         isedited ? <input className='bg-gray-50 text-3xl font-medium max-w-60 mt-4' type="text" value={userData.name} onChange={(e) => setUserData(prev => ({ ...prev, name: e.target.value }))} /> :
           <p className='text-3xl font-medium text-neutral-800 mt-4'>{userData.name}</p>
@@ -39,10 +98,10 @@ export const MyProfile = () => {
           <p className='font-medium' >Address:</p>
           {
             isedited ? <p>
-              <input className='bg-gray-50' type="text" value={userData.address.line1} onChange={(e) => setUserData(prev => ({ ...prev, address:{...prev.address, line1:e.target.value} }))}/>
+              <input className='bg-gray-50' type="text" value={userData.address.line1} onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line1: e.target.value } }))} />
               <br />
-              <input className='bg-gray-50' type="text" value={userData.address.line2} onChange={(e) => setUserData(prev => ({ ...prev, address:{...prev.address, line2:e.target.value} }))}/>
-            </p>:
+              <input className='bg-gray-50' type="text" value={userData.address.line2} onChange={(e) => setUserData(prev => ({ ...prev, address: { ...prev.address, line2: e.target.value } }))} />
+            </p> :
               <p className='text-gray-500'>
                 {userData.address.line1}
                 <br />
@@ -64,15 +123,15 @@ export const MyProfile = () => {
           }
           <p className='font-medium'>Birthday:</p>
           {
-            isedited ? <input className='max-w-28 bg-gray-100' type="date" value={userData.dob} onChange={(e) => setUserData(prev => ({ ...prev, dob: e.target.value }))}/>:
+            isedited ? <input className='max-w-28 bg-gray-100' type="date" value={userData.dob} onChange={(e) => setUserData(prev => ({ ...prev, dob: e.target.value }))} /> :
               <p className='text-gray-400'>{userData.dob}</p>
           }
         </div>
       </div>
       <div className='mt-10'>
         {
-          isedited? <button className='border border-blue-500 px-8 py-2 rounded-full hover:bg-blue-500 hover:text-white transition-all duration-500' onClick={()=>setIsedited(false)}>Save information</button>:
-          <button className='border border-blue-500 px-8 py-2 rounded-full hover:bg-blue-500 hover:text-white transition-all duration-500' onClick={()=>setIsedited(true)}>Edit</button>
+          isedited ? <button className='border border-blue-500 px-8 py-2 rounded-full hover:bg-blue-500 hover:text-white transition-all duration-500' onClick={updateUserProfileData}>Save information</button> :
+            <button className='border border-blue-500 px-8 py-2 rounded-full hover:bg-blue-500 hover:text-white transition-all duration-500' onClick={() => setIsedited(true)}>Edit</button>
         }
       </div>
     </div>

@@ -77,7 +77,8 @@ const adminLogin = async (req, res) => {
 }
 const allDoctor = async (req, res) => {
     try {
-        const doctors = doctorsModel.find({}).select('-password')
+        const doctors = await doctorsModel.find({}).select('-password')
+        console.log(doctors)
         res.json({ success: true, doctors })
     } catch (error) {
         res.json({ success: false, message: error.message })

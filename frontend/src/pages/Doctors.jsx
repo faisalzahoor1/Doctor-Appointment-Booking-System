@@ -5,21 +5,37 @@ import { useNavigate, useParams } from 'react-router-dom';
 export const Doctors = () => {
   const { speciality } = useParams();
   const navigate = useNavigate();
-  const { doctors } = useContext(AppContext);
-  const [filterDoc, setfilterDoc] = useState([]);
+  const { getDoctorsData } = useContext(AppContext);
+  // const [filterDoc, setfilterDoc] = useState([]);
   const [showFilter, setfilter] = useState(false);
+  const [list, setList] = useState([]);
+  const [finalList, setFinalList] = useState([])
 
-  const applyFilter = () => {
-    if (speciality) {
-      setfilterDoc(doctors.filter(doc => doc.speciality === speciality))
-    } else {
-      setfilterDoc(doctors)
-    }
+  // const applyFilter = () => {
+  //   if (speciality) {
+  //     setFinalList(list.filter(doc => doc.speciality === speciality))
+  //   } else {
+  //     setFinalList(list)
+  //   }
+  // }
+  
+
+  const doc = async()=>{
+    const list1 = await getDoctorsData();
+    setList(list1)
+    setFinalList(list1)
   }
-
   useEffect(() => {
-    applyFilter()
-  }, [doctors, speciality])
+    doc()
+  }, [])
+
+   useEffect(() => {
+    if (speciality) {
+      setFinalList(list.filter(doc => doc.speciality === speciality));
+    } else {
+      setFinalList(list);
+    }
+  }, [list, speciality]);
   return (
     <div>
       <div>
@@ -36,7 +52,7 @@ export const Doctors = () => {
           </div>
           <div className='w-full mx-24 mt-4 grid grid [grid-template-columns:repeat(auto-fill,minmax(200px,1fr))] gap-4 gap-y-6'>
             {
-              filterDoc.map((item, index) => (
+              finalList.map((item, index) => (
                 <div onClick={() => navigate(`/doctors-appointments/${item._id}`)} className='border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500' key={index}>
                   <img className='bg-blue-50' src={item.image} alt={item.name} />
                   <div className='p-4' >

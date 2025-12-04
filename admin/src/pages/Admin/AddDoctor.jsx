@@ -13,7 +13,7 @@ const AddDoctor = () => {
   const [experience, setExperience] = useState('1 Year')
   const [fees, setFees] = useState('')
   const [degree, setDegree] = useState('')
-  const [speciality, setSpeciality] = useState('General Physician')
+  const [speciality, setSpeciality] = useState('General physician')
   const [Address1, setAddress1] = useState('')
   const [Address2, setAddress2] = useState('')
   const [about, setAbout] = useState('')
@@ -42,22 +42,22 @@ const AddDoctor = () => {
       formData.append('address', JSON.stringify({ line1: Address1, line2: Address2 }))
       formData.append('about', about)
 
-      const { data } = await axios.post(backend_url + '/api/admin/add-doctor', formData, {headers: {atoken}})
+      const { data } = await axios.post(backend_url + '/api/admin/add-doctor', formData, { headers: { atoken } })
       if (data.success) {
         toast.success(data.message)
-        setDocImg('false')
+        setDocImg(false)
         setEmail('')
         setName('')
         setExperience('1 Year')
         setFees('')
         setAbout('')
-        setSpeciality('')
+        setSpeciality('General physician')
         setPassword('')
         setDegree('')
         setAddress1('')
         setAddress2('')
       } else {
-        toast.success(data.message)
+        toast.error(data.message)
       }
     } catch (error) {
       toast.error(error.message)
