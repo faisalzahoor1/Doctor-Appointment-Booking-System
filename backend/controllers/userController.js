@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken'
 import { v2 as cloudinary } from 'cloudinary'
 import { json } from 'express';
 import doctorModel from '../models/doctorsModel.js';
+import appointmentModel from '../models/appointmentModel.js';
 
 
 
@@ -105,7 +106,8 @@ const updateProfile = async (req, res) => {
 
 const bookAppointment = async (req, res) => {
     try {
-        const { userId, docId, slotDate, slotTime } = req.body
+        const {docId, slotDate, slotTime } = req.body
+        const userId = req.userId;
 
         const docData = await doctorModel.findById(docId).select('-password')
 
@@ -137,7 +139,7 @@ const bookAppointment = async (req, res) => {
             amount: docData.fees,
             slotTime,
             slotDate,
-            date: date.now()
+            date: Date.now()
         }
 
         const newAppointment = new appointmentModel(appointmentData)
@@ -154,4 +156,44 @@ const bookAppointment = async (req, res) => {
         res.json({ success: false, message: error.message })
     }
 }
-export { userRegister, userLogin, userProfile, updateProfile, bookAppointment }
+
+const listAppointment = async (req, res)=>{
+    try {
+        const userId = req.userId;
+
+        const appointments = await appointmentModel.find({userId})
+        res.json({success:true, appointments})
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+}
+
+const cancelAppointment = async(req, res)=>{
+    try {
+        const {appointmentId} = req.body
+        const userId = req.userId;
+        const appointmentData = await appointmentModel.findById(appointmentId)
+
+        if (appointmentData.userId !== userId) {
+            return res.json({ success: false, message: "unauthorized action" })
+        }
+
+        await appointmentModel.findByIdAndUpdate(appointmentId, {cancelled:true})
+
+
+        const {docId, slotDate, slotTime} = appointmentData
+
+        const doctorData = await doctorModel.findById(docId)
+
+        let slots_booked = doctorData.slots_booked
+
+        slots_booked[slotDate] = slots_booked[slotDate].filter(e => e!==slotTime)
+
+        await doctorModel.findByIdAndUpdate(docId, {slots_booked})
+
+        res.json({success:true, message:'Appointment Cancelled'})
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+}
+export { userRegister, userLogin, userProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment }
