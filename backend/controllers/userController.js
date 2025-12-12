@@ -6,7 +6,12 @@ import { v2 as cloudinary } from 'cloudinary'
 import { json } from 'express';
 import doctorModel from '../models/doctorsModel.js';
 import appointmentModel from '../models/appointmentModel.js';
+import razorpay from 'razorpay'
 
+const razorpayInstance = new razorpay({
+    key_id:'',
+    key_secret:''
+})
 
 
 
@@ -196,4 +201,29 @@ const cancelAppointment = async(req, res)=>{
         res.json({ success: false, message: error.message })
     }
 }
-export { userRegister, userLogin, userProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment }
+
+// const paymentRazorpay = async(req, res)=>{
+//     try {
+//         const {appointmentId} = req.body
+//         const appointmentData = await appointmentModel.findById(appointmentId)
+
+//         if(!appointmentData || appointmentData.cancelled){
+//             return res.json({success:false, message:"appointment cancelled or not found"})
+//         }
+//         // create options for razorpay
+
+//         const options = {
+//             amount: appointmentData.amount * 100,
+//             currency: process.env.CURRENCY,
+//             receipt: appointmentId,
+//         }
+
+//         // create an order
+//         const order = await razorpayInstance.order.create(options)
+//         res.json({success:true, order})
+
+//     } catch (error) {
+//         res.json({ success: false, message: error.message })
+//     }
+// }
+export { userRegister, userLogin, userProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, paymentRazorpay }
