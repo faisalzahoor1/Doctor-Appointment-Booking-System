@@ -8,10 +8,10 @@ import doctorModel from '../models/doctorsModel.js';
 import appointmentModel from '../models/appointmentModel.js';
 import razorpay from 'razorpay'
 
-const razorpayInstance = new razorpay({
-    key_id:'',
-    key_secret:''
-})
+// const razorpayInstance = new razorpay({
+//     key_id:'',
+//     key_secret:''
+// })
 
 
 
@@ -226,4 +226,4 @@ const cancelAppointment = async(req, res)=>{
 //         res.json({ success: false, message: error.message })
 //     }
 // }
-export { userRegister, userLogin, userProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, paymentRazorpay }
+export { userRegister, userLogin, userProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment }

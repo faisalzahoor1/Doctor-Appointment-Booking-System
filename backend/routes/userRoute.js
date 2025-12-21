@@ -1,5 +1,5 @@
 import express from 'express'
-import { userLogin, userRegister, userProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, paymentRazorpay } from '../controllers/userController.js'
+import { userLogin, userRegister, userProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment } from '../controllers/userController.js'
 import upload from '../middlewares/multer.js'
 import usersLogin from '../middlewares/usersLogin.js'
 
