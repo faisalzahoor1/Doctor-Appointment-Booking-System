@@ -22,6 +22,7 @@ app.use(cors())
 //api endpoint
 app.use('/api/admin', adminRouter)
 app.use('/api/doctor',doctorRouter)
+console.log("server")
 app.use('/api/user',userRouter)
 
 

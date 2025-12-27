@@ -4,6 +4,7 @@ import { v2 as cloudinary } from 'cloudinary'
 import doctorsModel from '../models/doctorsModel.js'
 import appointmentModel from '../models/appointmentModel.js'
 import jwt from 'jsonwebtoken'
+import userModel from '../models/userModel.js'
 
 
 const addDoctor = async (req, res) => {
@@ -61,12 +62,15 @@ const adminLogin = async (req, res) => {
         const { email, password } = req.body
 
         if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
-            // const token = jwt.sign(email+password, process.env.JWT_SECRET)
-            const token = jwt.sign(
-                { email: process.env.ADMIN_EMAIL },
-                process.env.JWT_SECRET,
-                { expiresIn: "1d" }
-            )
+            const token = jwt.sign(email+password, process.env.JWT_SECRET)
+            // const token = jwt.sign(
+            //     {
+            //         email: process.env.ADMIN_EMAIL,
+            //         assword: process.env.ADMIN_PASSWORD
+            //     },
+            //     process.env.JWT_SECRET,
+            //     { expiresIn: "1d" }
+            // )
             res.json({ success: true, token })
         } else {
             res.json({ success: false, message: "Invalid Credentials" })
@@ -97,7 +101,7 @@ const appointmentsAdmin = async (req, res) => {
     }
 }
 
-const appointmentCancelled = async (req, res)=> {
+const appointmentCancelled = async (req, res) => {
     try {
         const { appointmentId } = req.body
         const appointmentData = await appointmentModel.findById(appointmentId)
@@ -122,5 +126,26 @@ const appointmentCancelled = async (req, res)=> {
     }
 }
 
-export { addDoctor, adminLogin, allDoctor, appointmentsAdmin, appointmentCancelled }
+const adminDashboard = async (req, res) => {
+    try {
+        const doctors = await doctorsModel.find({})
+        const users = await userModel.find({})
+        const appointments = await appointmentModel.find({})
+
+
+        const dashData = {
+            doctors: doctors.length,
+            appointments: appointments.length,
+            patients: users.length,
+            latestAppointments: [...appointments].reverse().slice(0, 5)
+        }
+
+        res.json({ success: true, dashData })
+
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+}
+
+export { addDoctor, adminLogin, allDoctor, appointmentsAdmin, appointmentCancelled, adminDashboard }
 
