@@ -47,11 +47,11 @@ const DoctorContextProvider = (props) => {
     }
         const cancelAppointment = async(appointmentId)=>{
         try {
-            console.log("hello3")
+           
             const {data} = await axios.post("http://localhost:4000/api/doctor/appointment-cancel", {appointmentId}, {headers:{dtoken}})
-            console.log("hell4")
+            
             if (data.success) {
-                console.log("hello")
+           
                 toast.success(data.message)
                 getAppointments()
             }else{
@@ -62,10 +62,28 @@ const DoctorContextProvider = (props) => {
         }
     }
 
+    const dashData = async()=>{
+        try {
+            console.log("hello3")
+            const {data} = await axios.get("http://localhost:4000/api/doctor/doctor-dashboard", {headers:{dtoken}})
+            console.log("hell4")
+            if (data.success) {
+                console.log("hello")
+                return data.dashData
+            }else{
+                toast.error(data.message)
+            }
+        } catch (error) {
+            
+            toast.error(error.message)
+        }
+    }
+
     const value = {
         dtoken,setDToken, 
         backend_url,
-        getAppointments, completeAppointment, cancelAppointment
+        getAppointments, completeAppointment, cancelAppointment,
+        dashData
     }
 
     return (

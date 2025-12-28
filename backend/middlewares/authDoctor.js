@@ -17,7 +17,7 @@ const authDoctor = async(req, res, next)=>{
         //     console.log("heloooo")
         //     return res.json({success:false, message:"Not an Authorized Login"})
         // }
-        console.log("midleware")
+        // console.log("midleware")
         req.docId = token_decode.id
         next()
     } catch (error) {
