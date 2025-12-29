@@ -34,7 +34,7 @@ const loginDoctor = async (req, res) => {
         }
         const isMatch = await bcrypt.compare(password, doctor.password)
         if (isMatch) {
-            const token = jwt.sign({ id: doctor._id }, process.env.JWT_SECRET)
+            const token = jwt.sign({ id: doctor._id }, process.env.JWT_SECRET, {expiresIn:'4h'})
 
             res.json({ success: true, token })
         } else {
