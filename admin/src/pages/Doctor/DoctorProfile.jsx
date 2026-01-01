@@ -26,13 +26,16 @@ const DoctorProfile = () => {
         fees: profileData.fees,
         available: profileData.available
       }
-
+      console.log("hello1")
       const {data} = await axios.post(backend_url+ "/api/doctor/update-profile", updateData, {Headers:{dtoken}})
+      console.log("hello2")
       if (data.success) {
+        
         toast.success(data.message)
         setIsedited(false)
         getProfileData()
       }else{
+        console.log("hello3")
         toast.error(data.message)
       }
     } catch (error) {
@@ -85,8 +88,8 @@ const DoctorProfile = () => {
             <label htmlFor=" ">Available</label>
           </div>
           {
-            isedited ? <button onClick={updateProfile} className='px-4 py-1 border-blue-500 text-sm rounded-full mt-5 hover:bg-blue-500 hover:text-white transition-all'>Edit</button>
-            :<button onClick={() => setIsedited(true)} className='px-4 py-1 border-blue-500 text-sm rounded-full mt-5 hover:bg-blue-500 hover:text-white transition-all'>Save Information</button>
+            isedited ? <button onClick={updateProfile} className='px-4 py-1 border-blue-500 text-sm rounded-full mt-5 hover:bg-blue-500 hover:text-white transition-all'>Save Information</button>
+            :<button onClick={() => setIsedited(true)} className='px-4 py-1 border-blue-500 text-sm rounded-full mt-5 hover:bg-blue-500 hover:text-white transition-all'>Edit</button>
           }
 
          

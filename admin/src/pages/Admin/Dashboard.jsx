@@ -10,7 +10,7 @@ const Dashboard = () => {
   const { atoken, getDashData, cancelAppointment } = useContext(AdminContext)
   const [dashData, setDashData] = useState(false)
 
-  const {slotDateFormat} = useContext(AppContext)
+  const { slotDateFormat } = useContext(AppContext)
 
   const Dash_Data = async () => {
     if (atoken) {
@@ -74,7 +74,9 @@ const Dashboard = () => {
                     <p className='text-gray-600'>{slotDateFormat(item.slotDate)}</p>
                   </div>
                   {
-                    item.cancelled ? <p className='text-red-400 text-xs font-medium'>Cancelled</p> : <img onClick={() => cancelAppointment(item._id)} className='w-10 cursor-pointer' src={assets.cancel_icon} alt="" />
+                    item.cancelled ? <p className='text-red-400 text-xs font-medium'>Cancelled</p> : item.isCompleted ?
+                      <p className='text-green-400 text-xs font-medium'>Completed </p>
+                      : <img onClick={() => cancelAppointment(item._id)} className='w-10 cursor-pointer' src={assets.cancel_icon} alt="" />
                   }
                 </div>
               ))

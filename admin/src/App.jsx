@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { AdminContext } from './context/AdminContext';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Admin/Dashboard';
 import AllAppointments from './pages/Admin/AllAppointments';
 import AddDoctor from './pages/Admin/AddDoctor';
@@ -13,6 +13,7 @@ import DoctorDashboard from './pages/Doctor/DoctorDashboard';
 import { DoctorContext } from './context/DoctorContext';
 import DoctorProfile from './pages/Doctor/DoctorProfile';
 import DoctorAppointments from './pages/Doctor/DoctorAppointments';
+
 
 const App = () => {
   const { atoken } = useContext(AdminContext)
@@ -24,7 +25,6 @@ const App = () => {
       <div className='flex items-start'>
         <Sidebar />
         <Routes>
-          {/* <Route path='/' element={<></>} /> */}
           <Route path='/admin-dashboard' element={<Dashboard />} />
           <Route path='/all-appointments' element={<AllAppointments />} />
           <Route path='/add-doctor' element={<AddDoctor />} />
@@ -39,7 +39,8 @@ const App = () => {
   ) : (
     <>
       <Routes>
-        <Route path='/Login' element={<Login />} />
+        <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
       <ToastContainer />
     </>
