@@ -123,5 +123,27 @@ const doctorDashboard = async(req, res)=>{
     }
 }
 
+const doctorProfile = async(req, res)=>{
+    try {
+        const docId = req.docId
+        const profileData = await doctorModel.findById(docId).select('-password')
+        res.json({success:true, profileData})
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+}
 
-export { changeAvailability, doctorList, loginDoctor, doctorAppointments, appointmentComplete, appointmentCancel, doctorDashboard }
+const updateProfile = async(req, res)=>{
+    try {
+        const {fees, address, available} = req.body
+        const docId = req.docId
+
+        await doctorModel.findByIdAndUpdate(docId, {fees, address, available})
+        res.json({success:true,message:'profile-updated' })
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+}
+
+
+export { changeAvailability, doctorList, loginDoctor, doctorAppointments, appointmentComplete, appointmentCancel, doctorDashboard, doctorProfile, updateProfile }

@@ -79,11 +79,22 @@ const DoctorContextProvider = (props) => {
         }
     }
 
+    const getProfileData = async()=>{
+        try {
+            const {data} = await axios.get("http://localhost:4000/api/doctor/doctor-profile", {headers:{dtoken}})
+            if (data.success) {
+                return data.profileData
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
+    }
+
     const value = {
         dtoken,setDToken, 
         backend_url,
         getAppointments, completeAppointment, cancelAppointment,
-        dashData
+        dashData, getProfileData
     }
 
     return (
