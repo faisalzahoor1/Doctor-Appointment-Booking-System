@@ -30,6 +30,6 @@ app.get('/',(req,res)=>{
     res.send("API WORKING")
 })
 
-app.listen(4000, ()=>{
+app.listen(port, ()=>{
     console.log("SERVER IS RUNNING", port)
 })
