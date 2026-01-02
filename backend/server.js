@@ -17,7 +17,15 @@ connectCloudinary()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors())
+
+app.use(cors({
+  origin: [
+    "https://lifecareuser.up.railway.app",  // your frontend
+    "https://adminlifecare.up.railway.app"                       // your admin frontend
+  ],
+  methods: ["GET","POST","PUT","DELETE"]
+}))
+// app.use(cors())
 
 //api endpoint
 app.use('/api/admin', adminRouter)
