@@ -9,7 +9,7 @@ import axios from 'axios';
 export const DoctorsAppointments = () => {
 
   const { docId } = useParams();
-  const { doctors, currencySymbol, token, getDoctorsData } = useContext(AppContext);
+  const { doctors, currencySymbol, token, getDoctorsData, backend_url } = useContext(AppContext);
   const navigate = useNavigate()
 
   const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THUR', 'FRI', 'SAT'];
@@ -87,7 +87,7 @@ export const DoctorsAppointments = () => {
 
       const slotDate = day + "_" + month + "_" + year
 
-      const { data } = await axios.post('http://localhost:4000/api/user/book-appointment', { docId, slotDate, slotTime }, { headers: { token } })
+      const { data } = await axios.post(backend_url + '/api/user/book-appointment', { docId, slotDate, slotTime }, { headers: { token } })
       if (data.success) {
         toast.success(data.message)
         getDoctorsData()

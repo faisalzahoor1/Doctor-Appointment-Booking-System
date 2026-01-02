@@ -51,7 +51,7 @@ export const Navbar = () => {
                         : <button onClick={() => navigate('/login')} className='bg-blue-500 text-white px-8 py-3 rounded-full font-light hidden md:block cursor-pointer'>Create Account</button>
                 }
                 <img onClick={()=>setMenu(true)}  className='w-6 md:hidden' src={assets.menu_icon} alt="" />
-                <div  className={`${showMenu ? 'fixed w-full': 'h-0 w-0'} md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all duration-300`}>
+                <div  className={`md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all duration-300 ${showMenu ? 'fixed w-full': 'h-0 w-0'} `}>
                     <div className='flex items-center justify-between py-6 px-5'>
                         <img className='w-36' src={assets.logo} alt="" />
                         <img className='w-7' onClick={()=>setMenu(false)} src={assets.cross_icon} alt="" />

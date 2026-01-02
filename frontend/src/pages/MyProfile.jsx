@@ -6,7 +6,7 @@ import { assets } from '../assets/assets_frontend/assets.js'
 
 
 export const MyProfile = () => {
-  const { token } = useContext(AppContext)
+  const { token, backend_url } = useContext(AppContext)
 
   const [userData, setUserData] = useState(false);
   const [isedited, setIsedited] = useState(false);
@@ -17,7 +17,7 @@ export const MyProfile = () => {
   const loadProfileData = async () => {
     try {
       // console.log("code")
-      const { data } = await axios.get('http://localhost:4000/api/user/get-profile', { headers: { token } })
+      const { data } = await axios.get(backend_url + '/api/user/get-profile', { headers: { token } })
       if (data.success) {
         setUserData(data.userData)
       } else {
@@ -50,7 +50,7 @@ export const MyProfile = () => {
       formData.append('gender', userData.gender)
       image && formData.append('image', image)
 
-      const { data } = await axios.post('http://localhost:4000/api/user/update', formData, { headers: { token } })
+      const { data } = await axios.post(backend_url + '/api/user/update', formData, { headers: { token } })
       if (data.success) {
         toast.success(data.message)
         await loadProfileData()

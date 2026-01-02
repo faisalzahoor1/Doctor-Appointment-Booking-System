@@ -14,7 +14,7 @@ const DoctorContextProvider = (props) => {
     const getAppointments = async()=>{
         try {
             // console.log("hello")
-            const {data} = await axios.get("http://localhost:4000/api/doctor/appointments", {headers:{dtoken}})
+            const {data} = await axios.get(backend_url + "/api/doctor/appointments", {headers:{dtoken}})
             // console.log("hello1")
             if (data.success) {
                 // console.log("hello2")
@@ -32,7 +32,7 @@ const DoctorContextProvider = (props) => {
     const completeAppointment = async(appointmentId)=>{
         try {
             console.log("hello1")
-            const {data} = await axios.post("http://localhost:4000/api/doctor/appointment-complete", {appointmentId}, {headers:{dtoken}})
+            const {data} = await axios.post(backend_url + "/api/doctor/appointment-complete", {appointmentId}, {headers:{dtoken}})
             console.log("hello2")
             if (data.success) {
                 toast.success(data.message)
@@ -48,7 +48,7 @@ const DoctorContextProvider = (props) => {
         const cancelAppointment = async(appointmentId)=>{
         try {
            
-            const {data} = await axios.post("http://localhost:4000/api/doctor/appointment-cancel", {appointmentId}, {headers:{dtoken}})
+            const {data} = await axios.post(backend_url + "/api/doctor/appointment-cancel", {appointmentId}, {headers:{dtoken}})
             
             if (data.success) {
            
@@ -65,7 +65,7 @@ const DoctorContextProvider = (props) => {
     const dashData = async()=>{
         try {
             console.log("hello3")
-            const {data} = await axios.get("http://localhost:4000/api/doctor/doctor-dashboard", {headers:{dtoken}})
+            const {data} = await axios.get(backend_url + "/api/doctor/doctor-dashboard", {headers:{dtoken}})
             console.log("hell4")
             if (data.success) {
                 console.log("hello")
@@ -81,7 +81,7 @@ const DoctorContextProvider = (props) => {
 
     const getProfileData = async()=>{
         try {
-            const {data} = await axios.get("http://localhost:4000/api/doctor/doctor-profile", {headers:{dtoken}})
+            const {data} = await axios.get(backend_url + "/api/doctor/doctor-profile", {headers:{dtoken}})
             if (data.success) {
                 return data.profileData
             }
